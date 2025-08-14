@@ -1,0 +1,61 @@
+{
+  "title": "Simple Cover Service (SCS)",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ajustes globales",
+        "description": "Elige la entidad del tiempo y los offsets de amanecer/atardecer.",
+        "data": {
+          "weather_entity": "Entidad del tiempo",
+          "sunrise_offset": "Offset del amanecer (minutos)",
+          "sunset_offset": "Offset del atardecer (minutos)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "menu": {
+        "title": "Opciones de SCS",
+        "menu_options": {
+          "add_cover": "Añadir persiana",
+          "remove_cover": "Eliminar persiana",
+          "edit_global": "Editar ajustes globales"
+        }
+      },
+      "add_cover": {
+        "title": "Añadir persiana",
+        "data": {
+          "cover_entity": "Persiana",
+          "temp_sensor": "Sensor de temperatura interior",
+          "window_azimuth": "Azimut de la ventana (°)",
+          "fov_half": "Semiancho de FOV (°)",
+          "default_position_day": "Posición por defecto de día (%)",
+          "min_position_day": "Posición mínima de día (%)",
+          "max_position_day": "Posición máxima de día (%)",
+          "default_position_night": "Posición por defecto de noche (%)",
+          "t_min": "Temperatura de confort mínima (°C)",
+          "t_max": "Temperatura de confort máxima (°C)",
+          "min_delta_position": "Delta mínima de posición (%)",
+          "min_delta_time": "Tiempo mínimo entre movimientos (s)",
+          "invert_position": "Invertir posición",
+          "debug": "Activar entidades de depuración"
+        }
+      },
+      "remove_cover": {
+        "title": "Eliminar persiana",
+        "data": {
+          "cover_entity": "Persiana a eliminar"
+        }
+      },
+      "edit_global": {
+        "title": "Editar ajustes globales",
+        "data": {
+          "weather_entity": "Entidad del tiempo",
+          "sunrise_offset": "Offset del amanecer (minutos)",
+          "sunset_offset": "Offset del atardecer (minutos)"
+        }
+      }
+    }
+  }
+}
