@@ -1,0 +1,7 @@
+{
+  "name": "Simple Cover Service (SCS)",
+  "domains": ["simple_cover_service"],
+  "country": "ES",
+  "homeassistant": "2024.6.0",
+  "render_readme": true
+}
