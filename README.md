@@ -15,7 +15,7 @@ Key features
 - Movement smoothing: min delta position and min delta time
 
 Install (HACS)
-1. HACS → Integrations → Custom repositories → URL: https://github.com/simple-cover-service/simple_cover_service, Category: Integration
+1. HACS → Integrations → Custom repositories → URL: https://github.com/albertjh/SimpleCoverService, Category: Integration
 2. Install “Simple Cover Service (SCS)”
 3. Restart Home Assistant
 4. Settings → Devices & Services → Add Integration → Simple Cover Service (SCS)
