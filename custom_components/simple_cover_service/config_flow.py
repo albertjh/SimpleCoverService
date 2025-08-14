@@ -4,41 +4,39 @@ import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.const import CONF_NAME
 from homeassistant.helpers import selector
 
 from .const import (
-    DOMAIN,
-    CONF_GLOBAL,
-    CONF_COVERS,
-    CONF_WEATHER_ENTITY,
-    CONF_SUNRISE_OFFSET,
-    CONF_SUNSET_OFFSET,
     CONF_COVER_ENTITY,
-    CONF_TEMP_SENSOR,
-    CONF_WINDOW_AZIMUTH,
-    CONF_FOV_HALF,
+    CONF_COVERS,
+    CONF_DEBUG,
     CONF_DEFAULT_DAY,
-    CONF_MIN_DAY,
-    CONF_MAX_DAY,
     CONF_DEFAULT_NIGHT,
-    CONF_T_MIN,
-    CONF_T_MAX,
+    CONF_FOV_HALF,
+    CONF_GLOBAL,
+    CONF_INVERT,
+    CONF_MAX_DAY,
+    CONF_MIN_DAY,
     CONF_MIN_DELTA_POS,
     CONF_MIN_DELTA_TIME,
-    CONF_INVERT,
-    CONF_DEBUG,
+    CONF_SUNRISE_OFFSET,
+    CONF_SUNSET_OFFSET,
+    CONF_T_MAX,
+    CONF_T_MIN,
+    CONF_TEMP_SENSOR,
+    CONF_WEATHER_ENTITY,
+    CONF_WINDOW_AZIMUTH,
     DEF_DEFAULT_DAY,
     DEF_DEFAULT_NIGHT,
-    DEF_MIN_DAY,
-    DEF_MAX_DAY,
-    DEF_T_MIN,
-    DEF_T_MAX,
     DEF_FOV_HALF,
+    DEF_MAX_DAY,
+    DEF_MIN_DAY,
     DEF_MIN_DELTA_POS,
     DEF_MIN_DELTA_TIME,
+    DEF_T_MAX,
+    DEF_T_MIN,
+    DOMAIN,
 )
-from .models import CoverConfig
 
 
 def _global_schema(hass: HomeAssistant):
@@ -108,7 +106,6 @@ class SCSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         if user_input is None:
             return self.async_show_form(step_id="user", data_schema=_global_schema(self.hass))
-        # Create the entry with empty covers; add via options
         options = {
             CONF_GLOBAL: {
                 CONF_WEATHER_ENTITY: user_input.get(CONF_WEATHER_ENTITY),
@@ -128,7 +125,6 @@ class SCSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class SCSOptionsFlowHandler(config_entries.OptionsFlow):
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         self.config_entry = config_entry
-        self._stage = "menu"
 
     async def async_step_init(self, user_input=None):
         return await self.async_step_menu()
@@ -156,12 +152,12 @@ class SCSOptionsFlowHandler(config_entries.OptionsFlow):
         covers = list(self.config_entry.options.get(CONF_COVERS, []))
         if not covers:
             return self.async_create_entry(title="", data=self.config_entry.options)
-        # Simple removal by entity id
         schema = vol.Schema(
             {
                 vol.Required(CONF_COVER_ENTITY): selector.SelectSelector(
                     selector.SelectSelectorConfig(
-                        options=[c[CONF_COVER_ENTITY] for c in covers], mode=selector.SelectSelectorMode.DROPDOWN
+                        options=[c[CONF_COVER_ENTITY] for c in covers],
+                        mode=selector.SelectSelectorMode.DROPDOWN,
                     )
                 )
             }
@@ -176,9 +172,8 @@ class SCSOptionsFlowHandler(config_entries.OptionsFlow):
 
     async def async_step_edit_global(self, user_input=None):
         if user_input is None:
-            current = self.config_entry.options.get(CONF_GLOBAL, {})
             schema = _global_schema(self.hass)
-            return self.async_show_form(step_id="edit_global", data_schema=schema, description_placeholders=current)
+            return self.async_show_form(step_id="edit_global", data_schema=schema)
         new_options = dict(self.config_entry.options)
         new_options[CONF_GLOBAL] = user_input
         return self.async_create_entry(title="", data=new_options)
