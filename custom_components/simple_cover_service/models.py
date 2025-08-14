@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Any
 
 
 @dataclass
 class GlobalConfig:
-    weather_entity: Optional[str] = None
+    weather_entity: str | None = None
     sunrise_offset: int = 0
     sunset_offset: int = 0
 
@@ -33,15 +32,15 @@ class CoverConfig:
 class RuntimeCoverState:
     automation_enabled: bool = True
     last_move_ts: float = 0.0
-    last_target: Optional[int] = None
-    last_context_id: Optional[str] = None  # for manual override detection
+    last_target: int | None = None
+    last_context_id: str | None = None  # for manual override detection
 
 
 @dataclass
 class EntryData:
     global_cfg: GlobalConfig
-    covers: Dict[str, CoverConfig] = field(default_factory=dict)
-    runtime: Dict[str, RuntimeCoverState] = field(default_factory=dict)
+    covers: dict[str, CoverConfig] = field(default_factory=dict)
+    runtime: dict[str, RuntimeCoverState] = field(default_factory=dict)
 
     def get_runtime(self, cover_entity: str) -> RuntimeCoverState:
         if cover_entity not in self.runtime:
