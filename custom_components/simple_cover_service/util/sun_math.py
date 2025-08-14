@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 def angular_diff_deg(a: float, b: float) -> float:
     """Minimal absolute difference between two azimuth angles in degrees."""
     d = abs(a - b) % 360.0
