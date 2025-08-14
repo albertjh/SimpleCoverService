@@ -2,15 +2,14 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import DOMAIN, SIGNAL_AUTOMATION_STATE_CHANGED
-from .models import EntryData
 from .coordinator import SCSCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -19,7 +18,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
     coord: SCSCoordinator = hass.data[DOMAIN][entry.entry_id]
     entities: list[SCSAutomationSwitch] = []
-    for cover_entity, cfg in coord.entry_data.covers.items():
+    for cover_entity in coord.entry_data.covers:
         entities.append(SCSAutomationSwitch(coord, cover_entity))
     async_add_entities(entities)
 
@@ -32,7 +31,6 @@ class SCSAutomationSwitch(SwitchEntity, RestoreEntity):
         self._cover = cover_entity
         self._attr_unique_id = f"{coordinator.entry.entry_id}-{cover_entity}-automation"
         self._attr_name = f"Automation {cover_entity}"
-        self._is_on = True
         self._unsub = None
 
     @property
@@ -61,11 +59,9 @@ class SCSAutomationSwitch(SwitchEntity, RestoreEntity):
 
     async def async_added_to_hass(self) -> None:
         await super().async_added_to_hass()
-        # Restore last state
         if (state := await self.async_get_last_state()) is not None:
             self.coordinator.entry_data.get_runtime(self._cover).automation_enabled = state.state == "on"
 
-        # Listen for dispatcher updates (manual override)
         self._unsub = async_dispatcher_connect(
             self.hass,
             SIGNAL_AUTOMATION_STATE_CHANGED,
