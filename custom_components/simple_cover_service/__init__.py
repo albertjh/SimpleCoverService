@@ -1,28 +1,25 @@
 from __future__ import annotations
 
 import logging
-from datetime import timedelta
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, Event, callback, Context
+from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import (
+    CONF_COVERS,
+    CONF_GLOBAL,
     DOMAIN,
     PLATFORMS,
     SIGNAL_AUTOMATION_STATE_CHANGED,
-    CONF_GLOBAL,
-    CONF_COVERS,
 )
-from .models import EntryData, GlobalConfig, CoverConfig, RuntimeCoverState
 from .coordinator import SCSCoordinator
+from .models import CoverConfig, EntryData, GlobalConfig
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    data = entry.data or {}
     options = entry.options or {}
 
     global_raw = options.get(CONF_GLOBAL, {})
@@ -61,7 +58,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coord
 
-    # Global state_changed listener for manual override detection
     @callback
     def _handle_state_changed(event: Event) -> None:
         entity_id: str | None = event.data.get("entity_id")
@@ -73,7 +69,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if new_state is None or old_state is None:
             return
 
-        # Try to detect a position change
         new_pos = new_state.attributes.get("current_position")
         old_pos = old_state.attributes.get("current_position")
         if new_pos is None or old_pos is None or new_pos == old_pos:
@@ -84,10 +79,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         evt_ctx = event.context.id if event.context else None
 
         if last_ctx and evt_ctx == last_ctx:
-            # Our own move; ignore
             return
 
-        # Manual override detected -> disable automation for this cover
         runtime.automation_enabled = False
         async_dispatcher_send(
             hass, SIGNAL_AUTOMATION_STATE_CHANGED, entry.entry_id, entity_id, False
