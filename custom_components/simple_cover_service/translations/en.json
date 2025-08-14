@@ -1,0 +1,61 @@
+{
+  "title": "Simple Cover Service (SCS)",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Global settings",
+        "description": "Choose weather entity and sunrise/sunset offsets.",
+        "data": {
+          "weather_entity": "Weather entity",
+          "sunrise_offset": "Sunrise offset (minutes)",
+          "sunset_offset": "Sunset offset (minutes)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "menu": {
+        "title": "SCS options",
+        "menu_options": {
+          "add_cover": "Add cover",
+          "remove_cover": "Remove cover",
+          "edit_global": "Edit global settings"
+        }
+      },
+      "add_cover": {
+        "title": "Add cover",
+        "data": {
+          "cover_entity": "Cover",
+          "temp_sensor": "Indoor temperature sensor",
+          "window_azimuth": "Window azimuth (°)",
+          "fov_half": "Field of view half-angle (°)",
+          "default_position_day": "Default day position (%)",
+          "min_position_day": "Min day position (%)",
+          "max_position_day": "Max day position (%)",
+          "default_position_night": "Default night position (%)",
+          "t_min": "Comfort min temp (°C)",
+          "t_max": "Comfort max temp (°C)",
+          "min_delta_position": "Min delta position (%)",
+          "min_delta_time": "Min delta time (s)",
+          "invert_position": "Invert position",
+          "debug": "Enable debug entities"
+        }
+      },
+      "remove_cover": {
+        "title": "Remove cover",
+        "data": {
+          "cover_entity": "Cover to remove"
+        }
+      },
+      "edit_global": {
+        "title": "Edit global settings",
+        "data": {
+          "weather_entity": "Weather entity",
+          "sunrise_offset": "Sunrise offset (minutes)",
+          "sunset_offset": "Sunset offset (minutes)"
+        }
+      }
+    }
+  }
+}
