@@ -1,14 +1,12 @@
 {
   "domain": "simple_cover_service",
   "name": "Simple Cover Service (SCS)",
-  "version": "0.1.0",
-  "documentation": "https://github.com/albertjh/SimpleCoverService#readme",
+  "version": "1.0.0",
+  "config_flow": true,
+  "documentation": "https://github.com/albertjh/SimpleCoverService",
   "issue_tracker": "https://github.com/albertjh/SimpleCoverService/issues",
   "requirements": [],
-  "dependencies": [],
-  "after_dependencies": ["sun", "season"],
-  "codeowners": ["@your-github"],
-  "iot_class": "local_push",
-  "config_flow": true,
-  "homeassistant": "2024.6.0"
+  "codeowners": ["@albertjh"],
+  "iot_class": "local_polling",
+  "loggers": ["custom_components.simple_cover_service"]
 }
