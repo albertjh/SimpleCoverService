@@ -7,8 +7,8 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import selector
 
 from .const import (
-    CONF_COVERS,
     CONF_COVER_ENTITY,
+    CONF_COVERS,
     CONF_DEBUG,
     CONF_DEFAULT_DAY,
     CONF_DEFAULT_NIGHT,
